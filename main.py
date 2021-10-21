@@ -1,5 +1,7 @@
-from tkinter.constants import INSERT
+from os import startfile
+from tkinter.constants import END, INSERT
 from tkinter.filedialog import askopenfilename
+from Analizador_Lexico import Analizador_Lexico
 import tkinter
 
 contenidoGlobal = []
@@ -27,18 +29,18 @@ def crearVentanaMenu():
     ventanaMenu.resizable(0,0)
     #Crar Label
     label1 = tkinter.Label(frame,text="ANALIZADOR")
-    label1.place(x= 325 , y=25)
+    label1.place(x= 50 , y=25)
     #Crear los botones
     botonCargarArchivo = tkinter.Button(frame,text="Cargar Archivo", command= bLeerArchivo)
-    botonCargarArchivo.place(x=50,y=25)
-    botonAnalizarArchivo = tkinter.Button(frame, text="Analizar Texto")
-    botonAnalizarArchivo.place(x=200, y= 25)
+    botonCargarArchivo.place(x=220,y=25)
+    botonAnalizarArchivo = tkinter.Button(frame, text="Analizar Texto", command= bAnalizarTexto)
+    botonAnalizarArchivo.place(x=370, y= 25)
     botonReporteTokens = tkinter.Button(frame, text="Reporte Tokens")
-    botonReporteTokens.place(x=450, y= 25)
+    botonReporteTokens.place(x=520, y= 25)
     botonReporteErrores = tkinter.Button(frame, text="Reporte Errores")
-    botonReporteErrores.place(x=600, y= 25)
+    botonReporteErrores.place(x=670, y= 25)
     botonReporteArbol = tkinter.Button(frame, text="Reporte Arbol")
-    botonReporteArbol.place(x=750, y= 25)
+    botonReporteArbol.place(x=820, y= 25)
     #Propiedades cuadroTextoEditar
     cuadroTextoEditar.place(x=50,y=80, width= 850, height=300)
     cuadroTextoEditar.configure(borderwidth=3, relief="solid")
@@ -60,7 +62,11 @@ def bLeerArchivo():
     archivo.close()
     contenidoGlobal = contenido
     cuadroTextoEditar.insert(INSERT,contenidoGlobal)
-    
+
+def bAnalizarTexto():
+    contenidoCaja = cuadroTextoEditar.get(1.0,END)
+    analizadorL = Analizador_Lexico()
+    analizadorL.analizarTexto(contenidoCaja)
 
 if __name__ == '__main__':
      crearVentanaMenu()
