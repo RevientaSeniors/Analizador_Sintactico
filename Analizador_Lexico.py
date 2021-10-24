@@ -1,4 +1,3 @@
-from sre_constants import FAILURE
 from Token import Token
 from Error import Error
 import re
@@ -80,7 +79,10 @@ class Analizador_Lexico():
                 elif caracterLeido == "$":
                     self.listaTokens.append(Token("dolar", caracterLeido, fila, columna))
                     columna+=1
+                    print("LEXICAMENTE CORRECTA")
                     break
+                else:
+                    self.listaErrores.append(Error("ERROR LÉXICO : "+caracterLeido,fila,columna))
             elif estado == 1:
                 if re.search('[a-zA-Z]',caracterLeido):
                     buffer+=caracterLeido
@@ -171,7 +173,8 @@ class Analizador_Lexico():
                     columna +=1
 
             i+=1    
-        for token in self.listaTokens:
-            print(token.get_tipo(),"   ", token.get_lexema())
+        return self.listaTokens
+        #for token in self.listaTokens:
+            #print(token.get_tipo(),"   ", token.get_lexema())
         
         

@@ -2,7 +2,10 @@ from os import startfile
 from tkinter.constants import END, INSERT
 from tkinter.filedialog import askopenfilename
 from Analizador_Lexico import Analizador_Lexico
+from Analizador_Sintactico import Analizador_Sintactico
 import tkinter
+
+from Analizador_Sintactico import Analizador_Sintactico
 
 contenidoGlobal = []
 #Crear la ventana
@@ -66,7 +69,10 @@ def bLeerArchivo():
 def bAnalizarTexto():
     contenidoCaja = cuadroTextoEditar.get(1.0,END)
     analizadorL = Analizador_Lexico()
-    analizadorL.analizarTexto(contenidoCaja)
+    listaTokens = analizadorL.analizarTexto(contenidoCaja)
+    analizadorS = Analizador_Sintactico()
+    analizadorS.analizarOrden(listaTokens)
+
 
 if __name__ == '__main__':
      crearVentanaMenu()
