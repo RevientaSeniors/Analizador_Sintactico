@@ -1,11 +1,15 @@
-from tkinter.constants import E, S
 from Token import Token
 from Error import Error
+from Expresion import *
+from Instruccion import *
 
 class Analizador_Sintactico():
     def __init__(self):
         self.listaTokens = []
         self.listaErrores = []
+        self.listaClaves =[]
+        self.listadeRegistros = []
+        self.listadeValores = []
         self.i = 0
 
     def analizarOrden(self, listaTokens):
@@ -80,11 +84,13 @@ class Analizador_Sintactico():
             if self.listaTokens[self.i].get_tipo()=='parentesisAbierto':
                 self.i+=1
                 if self.listaTokens[self.i].get_tipo()=='cadena':
+                    cadena = self.listaTokens[self.i].get_lexema()
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
                             self.i+=1
+                            InsImprimir(cadena)
                             pass
                         
     def insImprimirLn(self):
@@ -93,11 +99,13 @@ class Analizador_Sintactico():
             if self.listaTokens[self.i].get_tipo()=='parentesisAbierto':
                 self.i+=1
                 if self.listaTokens[self.i].get_tipo()=='cadena':
+                    cadena = self.listaTokens[self.i].get_lexema()
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
                             self.i+=1
+                            InsImprimirln(cadena)
                             pass           
     
     def insConteo(self):
@@ -109,6 +117,7 @@ class Analizador_Sintactico():
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='puntocoma':
                         self.i+=1
+                        InsRegistros(self.listadeRegistros).cantidadReg()
                         pass  
 
     def insPromedio(self):
@@ -117,10 +126,12 @@ class Analizador_Sintactico():
             if self.listaTokens[self.i].get_tipo()=='parentesisAbierto':
                 self.i+=1
                 if self.listaTokens[self.i].get_tipo()=='cadena':
+                    cadena = self.listaTokens[self.i].get_lexema()
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
+                            InsPromedio(cadena, self.listaClaves, self.listadeRegistros)
                             self.i+=1
                             pass
     def insContarSi(self):
@@ -129,14 +140,17 @@ class Analizador_Sintactico():
             if self.listaTokens[self.i].get_tipo()=='parentesisAbierto':
                 self.i+=1
                 if self.listaTokens[self.i].get_tipo()=='cadena':
+                    campo = self.listaTokens[self.i].get_lexema()
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='coma':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='entero':
+                            numero = self.listaTokens[self.i].get_lexema()
                             self.i+=1
                             if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                                 self.i+=1
                                 if self.listaTokens[self.i].get_tipo()=='puntocoma':
+                                    InsContarSi(campo,numero,self.listaClaves, self.listadeRegistros)
                                     self.i+=1
                                     pass
 
@@ -157,10 +171,12 @@ class Analizador_Sintactico():
             if self.listaTokens[self.i].get_tipo()=='parentesisAbierto':
                 self.i+=1
                 if self.listaTokens[self.i].get_tipo()=='cadena':
+                    campo = self.listaTokens[self.i].get_lexema()
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
+                            InsSuma(campo, self.listaClaves, self.listadeRegistros)
                             self.i+=1
                             pass
 
@@ -170,10 +186,12 @@ class Analizador_Sintactico():
             if self.listaTokens[self.i].get_tipo()=='parentesisAbierto':
                 self.i+=1
                 if self.listaTokens[self.i].get_tipo()=='cadena':
+                    campo = self.listaTokens[self.i].get_lexema()
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
+                            InsMax(campo, self.listaClaves,self.listadeRegistros)
                             self.i+=1
                             pass
                             
@@ -183,10 +201,12 @@ class Analizador_Sintactico():
             if self.listaTokens[self.i].get_tipo()=='parentesisAbierto':
                 self.i+=1
                 if self.listaTokens[self.i].get_tipo()=='cadena':
+                    campo = self.listaTokens[self.i].get_lexema()
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
+                            InsMin(campo, self.listaClaves,self.listadeRegistros)
                             self.i+=1
                             pass
 
@@ -196,10 +216,12 @@ class Analizador_Sintactico():
             if self.listaTokens[self.i].get_tipo()=='parentesisAbierto':
                 self.i+=1
                 if self.listaTokens[self.i].get_tipo()=='cadena':
+                    nombre = self.listaTokens[self.i].get_lexema()
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
+                            InsReporte(nombre,self.listaClaves, self.listadeRegistros)
                             self.i+=1
                             pass
     
@@ -213,20 +235,26 @@ class Analizador_Sintactico():
             self.i+=1
             pass
 
-
+    
     def listaValorClaves(self):
         if self.listaTokens[self.i].get_tipo()=='cadena':
+            clave = self.listaTokens[self.i].get_lexema()
+            self.listaClaves.append(clave)
             self.i+=1
             self.listaValorClaves2()
-        
+    
+
     def listaValorClaves2(self):
         if self.listaTokens[self.i].get_tipo()=='coma':
             self.i+=1
             if self.listaTokens[self.i].get_tipo()=='cadena':
+                clave = self.listaTokens[self.i].get_lexema()
+                self.listaClaves.append(clave)
                 self.i+=1
                 self.listaValorClaves2()
         elif self.listaTokens[self.i].get_tipo()=='corcheteCerrado':
-          pass
+            InsClaves(self.listaClaves)
+            pass
 
 
 
@@ -247,6 +275,7 @@ class Analizador_Sintactico():
     
     def listaRegistros2(self):
         if self.listaTokens[self.i].get_tipo()=='corcheteCerrado':
+            InsRegistros(self.listadeRegistros)
             pass
         else:
             self.registro()
@@ -269,13 +298,24 @@ class Analizador_Sintactico():
             self.valorRegistro()
             self.listaValoresRegistros2()
         elif self.listaTokens[self.i].get_tipo()=='llaveCerrada':
-          pass
+            self.listadeRegistros.append(self.listadeValores.copy())
+            self.listadeValores.clear()
+            pass
 
     def valorRegistro(self):
         if self.listaTokens[self.i].get_tipo()=='cadena':
+            self.listadeValores.append(self.listaTokens[self.i].get_lexema())
+            #expresion =ExpresionLiteral( "cadena",self.listaTokens[self.i].get_lexema())
             self.i+=1
+           # return expresion
         elif self.listaTokens[self.i].get_tipo()=='entero':
+            self.listadeValores.append(self.listaTokens[self.i].get_lexema())
+            #expresion =ExpresionLiteral( "entero",self.listaTokens[self.i].get_lexema())
             self.i+=1
+           # return expresion
         elif self.listaTokens[self.i].get_tipo()=='decimal':
+            self.listadeValores.append(self.listaTokens[self.i].get_lexema())
+            #expresion =ExpresionLiteral( "decimal",self.listaTokens[self.i].get_lexema())
             self.i+=1
+            #return expresion
         
