@@ -10,11 +10,13 @@ class Analizador_Sintactico():
         self.listaClaves =[]
         self.listadeRegistros = []
         self.listadeValores = []
+        self.retornos = ""
         self.i = 0
 
     def analizarOrden(self, listaTokens):
         self.listaTokens = listaTokens
         self.inicio()
+        return self.retornos, self.listaErrores
         
     def inicio(self):
         self.listaInstrucciones()
@@ -65,7 +67,6 @@ class Analizador_Sintactico():
             print("CADENA PERMITIDA SINTÁCTICAMENTE")
         else:
             self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
-            print("ERROR:  ", self.listaErrores[0].get_descripcion())
    
     def insClaves(self):
         if self.listaTokens[self.i].get_tipo()=='claves':
@@ -77,6 +78,14 @@ class Analizador_Sintactico():
                     self.listaValorClaves()
                     if self.listaTokens[self.i].get_tipo()=='corcheteCerrado':
                         self.i+=1
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
 
     def insImprimir(self):
         if self.listaTokens[self.i].get_tipo()=='imprimir':
@@ -90,8 +99,20 @@ class Analizador_Sintactico():
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
                             self.i+=1
-                            InsImprimir(cadena)
+                            impresion = InsImprimir(cadena)
+                            self.retornos+=impresion.cadena
                             pass
+                        else:
+                            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
                         
     def insImprimirLn(self):
         if self.listaTokens[self.i].get_tipo()=='imprimirln':
@@ -105,8 +126,20 @@ class Analizador_Sintactico():
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
                             self.i+=1
-                            InsImprimirln(cadena)
-                            pass           
+                            impresion = InsImprimirln(cadena)
+                            self.retornos+=impresion.cadena
+                            pass
+                        else:
+                            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
     
     def insConteo(self):
         if self.listaTokens[self.i].get_tipo()=='conteo':
@@ -117,8 +150,18 @@ class Analizador_Sintactico():
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='puntocoma':
                         self.i+=1
-                        InsRegistros(self.listadeRegistros).cantidadReg()
-                        pass  
+                        cadena =InsRegistros(self.listadeRegistros).cantidadReg()
+                        self.retornos+=cadena
+                        pass 
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
 
     def insPromedio(self):
         if self.listaTokens[self.i].get_tipo()=='promedio':
@@ -131,9 +174,21 @@ class Analizador_Sintactico():
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
-                            InsPromedio(cadena, self.listaClaves, self.listadeRegistros)
+                            cadena = InsPromedio(cadena, self.listaClaves, self.listadeRegistros)
+                            self.retornos+=cadena.cadena
                             self.i+=1
                             pass
+                        else:
+                            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
     def insContarSi(self):
         if self.listaTokens[self.i].get_tipo()=='contarsi':
             self.i+=1
@@ -150,9 +205,24 @@ class Analizador_Sintactico():
                             if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                                 self.i+=1
                                 if self.listaTokens[self.i].get_tipo()=='puntocoma':
-                                    InsContarSi(campo,numero,self.listaClaves, self.listadeRegistros)
+                                    cadena = InsContarSi(campo,numero,self.listaClaves, self.listadeRegistros)
+                                    self.retornos+=cadena.cadena
                                     self.i+=1
                                     pass
+                                else:
+                                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                            else:
+                                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                        else:
+                            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
 
     def insDatos(self):
         if self.listaTokens[self.i].get_tipo()=='datos':
@@ -162,9 +232,20 @@ class Analizador_Sintactico():
                 if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                     self.i+=1
                     if self.listaTokens[self.i].get_tipo()=='puntocoma':
+                        cadena = InsDatos(self.listaClaves, self.listadeRegistros)
+                        self.retornos+=cadena.cadena
                         self.i+=1
                         pass
-    
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
+
     def insSumar(self):
         if self.listaTokens[self.i].get_tipo()=='sumar':
             self.i+=1
@@ -176,9 +257,21 @@ class Analizador_Sintactico():
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
-                            InsSuma(campo, self.listaClaves, self.listadeRegistros)
+                            cadena= InsSuma(campo, self.listaClaves, self.listadeRegistros)
+                            self.retornos+=cadena.cadena
                             self.i+=1
                             pass
+                        else:
+                            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
 
     def insMaxima(self):
         if self.listaTokens[self.i].get_tipo()=='maximo':
@@ -191,9 +284,21 @@ class Analizador_Sintactico():
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
-                            InsMax(campo, self.listaClaves,self.listadeRegistros)
+                            cadena = InsMax(campo, self.listaClaves,self.listadeRegistros)
+                            self.retornos+=cadena.cadena
                             self.i+=1
                             pass
+                        else:
+                            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
                             
     def insMinima(self):
         if self.listaTokens[self.i].get_tipo()=='minimo':
@@ -206,9 +311,21 @@ class Analizador_Sintactico():
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
-                            InsMin(campo, self.listaClaves,self.listadeRegistros)
+                            cadena = InsMin(campo, self.listaClaves,self.listadeRegistros)
+                            self.retornos += cadena.cadena
                             self.i+=1
                             pass
+                        else:
+                            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
 
     def insReporte(self):
         if self.listaTokens[self.i].get_tipo()=='reporte':
@@ -221,9 +338,22 @@ class Analizador_Sintactico():
                     if self.listaTokens[self.i].get_tipo()=='parentesisCerrado':
                         self.i+=1
                         if self.listaTokens[self.i].get_tipo()=='puntocoma':
-                            InsReporte(nombre,self.listaClaves, self.listadeRegistros)
+                            cadena = InsReporte(nombre,self.listaClaves, self.listadeRegistros)
+                            self.retornos+=cadena.cadena
                             self.i+=1
                             pass
+                        else:
+                            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
+
     
     def comentarioComillas(self):
         if self.listaTokens[self.i].get_tipo()=='comentarioComillas':
@@ -242,6 +372,9 @@ class Analizador_Sintactico():
             self.listaClaves.append(clave)
             self.i+=1
             self.listaValorClaves2()
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
     
 
     def listaValorClaves2(self):
@@ -268,6 +401,15 @@ class Analizador_Sintactico():
                     self.listaRegistros()
                     if self.listaTokens[self.i].get_tipo()=='corcheteCerrado':
                         self.i+=1
+                    else:
+                        self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+                else:
+                    self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+
 
     def listaRegistros(self):
         self.registro()
@@ -287,6 +429,10 @@ class Analizador_Sintactico():
             self.listaValoresRegistros()
             if self.listaTokens[self.i].get_tipo()=='llaveCerrada':
                 self.i+=1
+            else:
+                self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
 
     def listaValoresRegistros(self):
         self.valorRegistro()
@@ -301,6 +447,8 @@ class Analizador_Sintactico():
             self.listadeRegistros.append(self.listadeValores.copy())
             self.listadeValores.clear()
             pass
+        else:
+            self.listaErrores.append(Error("ERROR SINTÁCTICO: "+ self.listaTokens[self.i].get_lexema(), self.listaTokens[self.i].get_fila(), self.listaTokens[self.i].get_columna()))
 
     def valorRegistro(self):
         if self.listaTokens[self.i].get_tipo()=='cadena':

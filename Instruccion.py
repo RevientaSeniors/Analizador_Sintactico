@@ -1,28 +1,37 @@
+
 class InsImprimir():
     def __init__(self, cadena):
         self.cadena = cadena.replace('"',"")
-        return print(self.cadena, end=" ")
+        self.retornar()
+
+    def retornar(self):    
+        return self.cadena
 
 class InsImprimirln():
     def __init__(self, cadena):
         self.cadena = cadena.replace('"',"")
-        return print("\n"+self.cadena)
+        self.cadena = self.cadena+"\n"
+        self.retornar()
+        
+    def retornar(self):    
+        return self.cadena
 
 class InsClaves():
     def __init__(self,claves):
         self.claves = claves
-        for clave in self.claves:
-            print(clave)
+        #for clave in self.claves:
+            #print(clave)
 
 class InsRegistros():
     def __init__(self,registros):
         self.registros = registros
-        for registro in self.registros:
-            print(registro)
+        #for registro in self.registros:
+            #print(registro)
 
     def cantidadReg(self):
         cantidad = len(self.registros)
-        print("La cantidad de registros es: ",cantidad)
+        cadena = "\nLa cantidad de registros es: "+ str(cantidad) + "\n"
+        return cadena
     
 class InsPromedio():
     def __init__(self, campo, claves, registros):
@@ -30,14 +39,19 @@ class InsPromedio():
         self.claves = claves
         self.registros = registros
         self.suma = 0
+        self.cadena = ""
 
         for i in range(len(claves)):
             if  self.campo == self.claves[i]:
                 for j in range(len(self.registros)):
                     self.suma+= int(registros[j][i])
-        
+
         self.promedio = self.suma/ len(self.registros)
-        print("el promedio es: ", self.promedio)
+        self.retornar()
+
+    def retornar(self):
+        self.cadena = "\nEl promedio es: "+ str(self.promedio)+"\n"
+        return self.cadena
 
 class InsContarSi():
     def __init__(self,campo,numero,claves,registros):
@@ -46,6 +60,7 @@ class InsContarSi():
         self.claves = claves
         self.registros = registros
         self.contador = 0
+        self.cadena =""
 
         for i in range(len(claves)):
             if  self.campo == self.claves[i]:
@@ -53,12 +68,28 @@ class InsContarSi():
                 for j in range(len(self.registros)):
                     if int(self.registros[j][i]) == int(self.numero):
                         self.contador+=1
-        print("En el campo: ",self.campo, " hay ", self.contador)
+        self.retornar()
+
+    def retornar(self):
+        self.cadena= "\nEn el campo: "+self.campo+" hay "+ str(self.contador)+"\n"
+        return self.cadena
 
 class InsDatos():
     def __init__(self, claves, registros):
         self.claves = claves
         self.registros = registros
+        self.cadena = ""
+        self.retornar()
+    def  retornar(self):
+        for clave in self.claves:
+            self.cadena += clave+"  "
+        for registros in self.registros:
+            self.cadena+="\n"
+            for registro in registros:
+                self.cadena+=registro+"  "
+        self.cadena+="\n"
+        return self.cadena
+
 
 class InsSuma():
     def __init__(self, campo, claves, registros):
@@ -66,13 +97,16 @@ class InsSuma():
         self.claves = claves
         self.registros = registros
         self.suma = 0
+        self.cadena = ""
 
         for i in range(len(claves)):
             if  self.campo == self.claves[i]:
                 for j in range(len(self.registros)):
                     self.suma+= int(registros[j][i])
-        
-        print("La suma es: ", self.suma)
+        self.retornar()
+    def retornar(self):
+        self.cadena+="La suma es: "+ str(self.suma)+"\n"
+        return self.cadena
 
 
 class InsMax():
@@ -81,13 +115,17 @@ class InsMax():
         self.claves = claves
         self.registros = registros
         self.listanums = []
+        self.cadena=""
 
         for i in range(len(claves)):
             if  self.campo == self.claves[i]:
                 for j in range(len(self.registros)):
                     self.listanums.append(registros[j][i])
-        
-        print("El número máximo es: ", max(self.listanums))
+        self.retorno()
+
+    def retorno(self):
+        self.cadena+= "El número máximo es: "+ str(max(self.listanums))+"\n"
+        return self.cadena
 
 class InsMin():
     def __init__(self, campo, claves, registros):
@@ -95,20 +133,25 @@ class InsMin():
         self.claves = claves
         self.registros = registros
         self.listanums = []
+        self.cadena = ""
 
         for i in range(len(claves)):
             if  self.campo == self.claves[i]:
                 for j in range(len(self.registros)):
                     self.listanums.append(registros[j][i])
-        
-        print("El número mínimo es: ", min(self.listanums))
+        self.retorno()
+    def retorno(self):
+        self.cadena+="El número mínimo es: "+ str(min(self.listanums))+"\n"
+        return self.cadena
 
 class InsReporte():
     def __init__(self, nombre, claves, registros):
         self.nombre = nombre.replace('"',"")
+        self.cadena = " Se generó el archivo html con el nombre"+self.nombre+"\n"
         self.nombre+=".html"
         self.claves = claves
         self.registros = registros
+        
 
         documento = open(self.nombre,'w')
         mensaje = """
@@ -152,3 +195,7 @@ class InsReporte():
         </html>"""
         documento.write(mensaje)
         documento.close()
+        self.retorno()
+    def retorno(self):
+        return self.cadena
+

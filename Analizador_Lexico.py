@@ -112,6 +112,8 @@ class Analizador_Lexico():
                         self.listaTokens.append(Token('minimo', buffer, fila, columna))
                     elif buffer == 'exportarReporte':
                         self.listaTokens.append(Token('reporte', buffer, fila, columna))
+                    else:
+                        self.listaErrores.append(Error("ERROR LÉXICO : "+caracterLeido,fila,columna))
                     buffer = ''
                     i -= 1
                     estado = 0
@@ -173,7 +175,7 @@ class Analizador_Lexico():
                     columna +=1
 
             i+=1    
-        return self.listaTokens
+        return self.listaTokens, self.listaErrores
         #for token in self.listaTokens:
             #print(token.get_tipo(),"   ", token.get_lexema())
         
